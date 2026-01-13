@@ -4,8 +4,8 @@ from datetime import datetime
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
-    import psycopg2
-    from psycopg2.extras import RealDictCursor
+    import psycopg
+    from psycopg.rows import dict_row
     USE_POSTGRES = True
 else:
     import sqlite3
@@ -16,7 +16,7 @@ else:
 
 def get_connection():
     if USE_POSTGRES:
-        conn = psycopg2.connect(DATABASE_URL)
+        conn = psycopg.connect(DATABASE_URL, row_factory=dict_row)
         return conn
     else:
         conn = sqlite3.connect(DB_PATH)
@@ -25,10 +25,7 @@ def get_connection():
 
 
 def get_cursor(conn):
-    if USE_POSTGRES:
-        return conn.cursor(cursor_factory=RealDictCursor)
-    else:
-        return conn.cursor()
+    return conn.cursor()
 
 
 def placeholder():
