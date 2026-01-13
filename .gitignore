@@ -1,0 +1,7 @@
+.env
+nutype.db
+__pycache__/
+*.pyc
+.DS_Store
+venv/
+explain.md
