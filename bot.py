@@ -160,29 +160,35 @@ async def feedback_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "role": "user",
                 "content": f"""You are helping a beta testing community summarize user feedback for a crypto project called "{project_name}".
 
-Below is raw feedback from testers. Please create a structured summary that can be shared with the project team.
+Analyze the feedback and identify 2-3 main themes that naturally emerge from what users are saying. Do NOT use preset categories - let the themes come from the actual feedback.
 
 Format your response as:
 
 ## Summary
 (2-3 sentence overview)
 
-## UX & Usability
-(bullet points)
+## [Theme 1 Name]
+- Bullet point insight
+  > "supporting quote 1"
+  > "supporting quote 2"
+- Another bullet point insight
+  > "supporting quote 1"
+  > "supporting quote 2"
 
-## Bugs & Issues
-(bullet points)
+## [Theme 2 Name]
+- Bullet point insight
+  > "supporting quote 1"
+  > "supporting quote 2"
+- Another bullet point insight
+  > "supporting quote 1"
+  > "supporting quote 2"
 
-## Feature Requests
-(bullet points)
+## [Theme 3 Name] (if applicable)
+- Bullet point insight
+  > "supporting quote 1"
+  > "supporting quote 2"
 
-## What Works Well
-(bullet points)
-
-## Comparisons to Competitors
-(bullet points, if any)
-
-If a category has no relevant feedback, write "No feedback in this category."
+Each theme should have multiple bullet points. Each bullet point must include 2-3 actual user quotes as evidence.
 
 ---
 RAW FEEDBACK:
