@@ -105,24 +105,28 @@ Then start research on {project_name}. Ask @moyedx3 for website/docs if not publ
 # /start - Onboarding
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     welcome_text = """
-Welcome to Nutype!
+🧪 CryptoAppReview Beta Testing Bot
 
-We're a community of beta testers for early-stage crypto and onchain projects.
+This bot collects feedback for crypto app reviews on https://cryptoappreview-production.up.railway.app/
 
 How it works:
-1. Admins will register new projects to test
-2. You try out the project and share feedback
-3. Use #ProjectName to tag your feedback
-4. We aggregate and send it to the project team
+1. Admins register apps to review
+2. Testers use the app and share feedback
+3. Bot aggregates feedback with AI summary
+4. Summary sent to Char for research & article writing
+5. Review published on the site
 
 Commands:
-/projects - See active projects to test
-/start - See this message again
+/projects - See active apps to test
+/start - Show this message
 
-To give feedback, just type:
-#ProjectName your feedback here
+To submit feedback:
+#AppName your detailed feedback here
 
-Happy testing!
+Example:
+#MetaMask The new portfolio view is confusing. I couldn't find my NFTs for 5 minutes.
+
+Happy testing! 🔴
     """.strip()
     await update.message.reply_text(welcome_text)
 
