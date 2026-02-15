@@ -112,12 +112,13 @@ This bot collects feedback for crypto app reviews on https://cryptoappreview-pro
 How it works:
 1. Admins register apps to review
 2. Testers use the app and share feedback
-3. Bot aggregates feedback with AI summary
+3. Admin runs /feedback to generate AI summary
 4. Summary sent to Char for research & article writing
 5. Review published on the site
 
 Commands:
 /projects - See active apps to test
+/feedback AppName - Generate AI summary & send to Char (admin only)
 /start - Show this message
 
 To submit feedback:
