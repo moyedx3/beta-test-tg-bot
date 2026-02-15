@@ -26,11 +26,52 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
 ADMIN_USER_IDS = [int(x.strip()) for x in os.getenv("ADMIN_USER_IDS", "").split(",") if x.strip()]
 
+# CryptoAppReview integration - group where Char receives summaries
+CRYPTOAPPREVIEW_GROUP_ID = os.getenv("CRYPTOAPPREVIEW_GROUP_ID", "")  # e.g., -5237557865
+
 HASHTAG_PATTERN = re.compile(r"#(\w+)\s+(.+)", re.DOTALL)
 
 
 def is_admin(user_id: int) -> bool:
     return user_id in ADMIN_USER_IDS
+
+
+# Send feedback summary to CryptoAppReview group for Char
+async def send_to_char(context: ContextTypes.DEFAULT_TYPE, project_name: str, summary: str, raw_feedback: str):
+    """Send formatted summary to CryptoAppReview group where Char can process it"""
+    if not CRYPTOAPPREVIEW_GROUP_ID:
+        logger.info("CRYPTOAPPREVIEW_GROUP_ID not set, skipping Char notification")
+        return
+
+    try:
+        char_message = f"""📝 CRYPTOAPPREVIEW FEEDBACK SUMMARY
+
+App: {project_name}
+Aggregated by: Beta Test Bot
+Status: Ready for review
+
+---
+
+{summary}
+
+---
+
+📋 RAW FEEDBACK FOR CONTEXT:
+
+{raw_feedback[:2000]}{"..." if len(raw_feedback) > 2000 else ""}
+
+---
+
+🔴 @moyedx3 - Ready for Phase 2 (Research & Synthesis)"""
+
+        await context.bot.send_message(
+            chat_id=CRYPTOAPPREVIEW_GROUP_ID,
+            text=char_message,
+            parse_mode="HTML"
+        )
+        logger.info(f"Sent summary to Char for project: {project_name}")
+    except Exception as e:
+        logger.error(f"Failed to send to Char: {e}")
 
 
 # /start - Onboarding
@@ -229,6 +270,9 @@ RAW FEEDBACK:
         for i in range(0, len(raw_feedback), 4000):
             chunk = raw_feedback[i:i+4000]
             await update.message.reply_text(f"Raw feedback (continued):\n\n{chunk}")
+
+    # Send to Char for CryptoAppReview workflow
+    await send_to_char(context, project_name, summary, raw_feedback)
 
 
 # Hashtag feedback capture
