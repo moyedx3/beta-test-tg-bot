@@ -90,7 +90,11 @@ This is for the cryptoappreview project. Char should:
 App: {project_name}
 Action Required: Begin Phase 2 Research & Synthesis
 
-Char: Read obsidian-vault/02-projects/cryptoappreview/Workflow.md for full context, then start research on {project_name}. Ask @moyedx3 for website/docs if not publicly available."""
+Char: Read these files for full context:
+1. obsidian-vault/02-projects/cryptoappreview/Char-Context.md (tone, style, purpose)
+2. obsidian-vault/02-projects/cryptoappreview/Workflow.md (process)
+
+Then start research on {project_name}. Ask @moyedx3 for website/docs if not publicly available."""
         )
 
         logger.info(f"Sent complete summary to Char for project: {project_name}")
