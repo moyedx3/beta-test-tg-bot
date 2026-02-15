@@ -82,18 +82,15 @@ This is for the cryptoappreview project. Char should:
                 text=chunk
             )
 
-        # Final instruction message
+        # Final trigger message for Char
         await context.bot.send_message(
             chat_id=CRYPTOAPPREVIEW_GROUP_ID,
-            text=f"""🔴 @moyedx3 
+            text=f"""🔴 CRYPTOAPPREVIEW WORKFLOW TRIGGER
 
-Feedback for {project_name} is ready. Char should begin Phase 2 research.
+App: {project_name}
+Action Required: Begin Phase 2 Research & Synthesis
 
-Next steps:
-- Research app: website, docs, onchain data
-- Synthesize with above feedback
-- Create article draft
-- Send for review"""
+Char: Read obsidian-vault/02-projects/cryptoappreview/Workflow.md for full context, then start research on {project_name}. Ask @moyedx3 for website/docs if not publicly available."""
         )
 
         logger.info(f"Sent complete summary to Char for project: {project_name}")
