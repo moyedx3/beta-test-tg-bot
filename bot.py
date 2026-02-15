@@ -44,32 +44,59 @@ async def send_to_char(context: ContextTypes.DEFAULT_TYPE, project_name: str, su
         return
 
     try:
-        char_message = f"""📝 CRYPTOAPPREVIEW FEEDBACK SUMMARY
+        # Include full raw feedback (Telegram limit is 4096, we'll split if needed)
+        char_message_part1 = f"""📝 CRYPTOAPPREVIEW FEEDBACK SUMMARY
 
 App: {project_name}
 Aggregated by: Beta Test Bot
-Status: Ready for review
+Status: Ready for Phase 2 (Research & Synthesis)
 
----
+=== WORKFLOW CONTEXT ===
+This is for the cryptoappreview project. Char should:
+1. Read obsidian-vault/02-projects/cryptoappreview/Workflow.md for full context
+2. Research the app (onchain mechanics, team, etc.)
+3. Synthesize this feedback with research into an article
+4. Create initial rating
+5. Send draft to Moyed for review
+
+=== AI SUMMARY ===
 
 {summary}
-
----
-
-📋 RAW FEEDBACK FOR CONTEXT:
-
-{raw_feedback[:2000]}{"..." if len(raw_feedback) > 2000 else ""}
-
----
-
-🔴 @moyedx3 - Ready for Phase 2 (Research & Synthesis)"""
+"""
 
         await context.bot.send_message(
             chat_id=CRYPTOAPPREVIEW_GROUP_ID,
-            text=char_message,
-            parse_mode="HTML"
+            text=char_message_part1
         )
-        logger.info(f"Sent summary to Char for project: {project_name}")
+
+        # Send full raw feedback separately
+        raw_header = "\n=== FULL RAW FEEDBACK ===\n\n"
+        full_raw = raw_header + raw_feedback
+
+        # Split into chunks if needed (Telegram 4096 limit)
+        max_length = 4000
+        for i in range(0, len(full_raw), max_length):
+            chunk = full_raw[i:i+max_length]
+            await context.bot.send_message(
+                chat_id=CRYPTOAPPREVIEW_GROUP_ID,
+                text=chunk
+            )
+
+        # Final instruction message
+        await context.bot.send_message(
+            chat_id=CRYPTOAPPREVIEW_GROUP_ID,
+            text=f"""🔴 @moyedx3 
+
+Feedback for {project_name} is ready. Char should begin Phase 2 research.
+
+Next steps:
+- Research app: website, docs, onchain data
+- Synthesize with above feedback
+- Create article draft
+- Send for review"""
+        )
+
+        logger.info(f"Sent complete summary to Char for project: {project_name}")
     except Exception as e:
         logger.error(f"Failed to send to Char: {e}")
 
